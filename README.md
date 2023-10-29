@@ -69,3 +69,8 @@
 ## 4.Daily Post
 
 ![](https://xiaoapi.cn/API/lssdjt_pic.php)
+
+
+## 5.API
+* [7585](https://api.7585.net.cn/)
+* [历史上的今天](https://www.ipip5.com/today/)
