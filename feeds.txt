@@ -78,3 +78,14 @@ https://feeds.simplecast.com/AeLYwXNc
 https://wordpress.org/news/feed/podcast
 https://codegolf.stackexchange.com/feeds
 https://feeds.macrumors.com/MacRumors-All
+http://rss.lizhi.fm/rss/21628.xml
+http://feed.tangsuanradio.com/gadio.xml
+http://www.ximalaya.com/album/5574153.xml
+https://bitvoice.banlan.show/feed/audio.xml
+https://keepcalm.banlan.show/feed/audio.xml
+https://www.thetype.com/typechat/feed/
+https://pan.icu/feed
+https://feeds.fireside.fm/shengdongjixi/rss
+https://techfusionfm.com/podcast.xml
+https://crazy.capital/feed
+http://rss.lizhi.fm/rss/1959617.xml
