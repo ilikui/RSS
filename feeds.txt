@@ -4,3 +4,7 @@ http://feeds.feedburner.com/ruanyifeng
 http://www.zhangxinxu.com/wordpress/?feed=rss2
 https://www.huangdf.xyz/rss.xml
 https://blog.fkynjyq.com/feed.xml
+https://www.buzzing.cc/feed.xml
+https://depth.buzzing.cc/feed.xml
+https://hn.buzzing.cc/feed.xml
+https://china.buzzing.cc/feed.xml
