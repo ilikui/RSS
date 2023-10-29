@@ -8,3 +8,4 @@ https://www.buzzing.cc/feed.xml
 https://depth.buzzing.cc/feed.xml
 https://hn.buzzing.cc/feed.xml
 https://china.buzzing.cc/feed.xml
+https://worldnews.buzzing.cc/feed.xml

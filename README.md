@@ -1,5 +1,11 @@
-# rssTea - RSS Reader and Podcast PWA using Github Actions
+# RSS Reading
 
-Source Come from  https://avadhesh18.github.io/rssTea/
+* Source Come from  https://avadhesh18.github.io/rssTea/
 
-## Features
+## 1.Features
+
+
+## 2.Hope
+
+* PHP Reading feed.opml file
+*  Beauiful UI
