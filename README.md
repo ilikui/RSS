@@ -1,7 +1,8 @@
 # RSS Reading
 
 * Source Come from  https://avadhesh18.github.io/rssTea/
-
+* [RSS](https://www.likui.info/RSS/public)
+  
 ## 1.Features
 
 
@@ -64,3 +65,7 @@
     * [城邦暴力团](https://data.getpodcast.xyz/data/ximalaya/9836213.xml)
     * [《洗脑术》怎样有逻辑的说服他人](https://data.getpodcast.xyz/data/163/340949062.xml)
     * [清醒思考的艺术](https://data.getpodcast.xyz/data/ximalaya/18227383.xml)
+
+## 4.Daily Post
+
+![](https://xiaoapi.cn/API/lssdjt_pic.php)
