@@ -14,6 +14,8 @@ Check the frontend live on - https://avadhesh18.github.io/rssTea/
                                                                                                                                             
 ## How to Use
 
+## Copy
+
 ### Configuration & Depolyment
 
 1. Fork the repo and edit the feeds.txt file to add your feeds.
