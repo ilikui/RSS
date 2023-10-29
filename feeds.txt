@@ -1,1 +1,6 @@
 https://blog.fkynjyq.com/feed.xml
+https://blog.t9t.io/atom.xml
+http://feeds.feedburner.com/ruanyifeng
+http://www.zhangxinxu.com/wordpress/?feed=rss2
+https://www.huangdf.xyz/rss.xml
+https://blog.fkynjyq.com/feed.xml
