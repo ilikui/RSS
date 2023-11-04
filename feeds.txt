@@ -116,6 +116,7 @@ https://data.getpodcast.xyz/data/ximalaya/297557.xml
 http://www.ximalaya.com/album/14170104.xml
 http://www.ximalaya.com/album/48143951.xml
 https://feed.xyzfm.space/wpdyxfr9eenw
+https://feeds.redcircle.com/c87caf51-6ccc-4392-b474-207a9d17c730
 
 
 
