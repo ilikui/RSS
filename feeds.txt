@@ -165,6 +165,7 @@ http://www.ximalaya.com/album/48143951.xml
 https://feed.xyzfm.space/wpdyxfr9eenw
 https://feeds.redcircle.com/c87caf51-6ccc-4392-b474-207a9d17c730
 https://www.chainfeeds.xyz/rss
+https://feeds.daopub.com/all.xml
 
 
 
