@@ -256,3 +256,4 @@ https://yitianshijie.net/episodes/feed.xml
 https://zheergen.club/episodes/feed.xml
 https://zhiyi.life/episodes/feed.xml
 https://zhuchangsile.xyz/episodes/feed.xml
+https://talkcdn.swift.gg/static/rss.xml
