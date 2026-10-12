@@ -42,6 +42,7 @@ echo "\n"."Getting feed from: ". $url." \n";
     $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     if (curl_errno($ch) || $httpcode != 200) {
          echo "\n"."Error loading feed from " . $url . " " . $httpcode . " " . curl_error($ch) ." \n ";
+         curl_close($ch);
          $feedn++;
         continue;
     }
@@ -149,6 +150,7 @@ foreach ($feeda as $item) {
 }
 ksort($categoryCounts, SORT_NATURAL | SORT_FLAG_CASE);
 $categoryHtml = '';
+$categoryTotal = count($feeda);
 foreach ($categoryCounts as $cat => $count) {
     $safeCat = htmlspecialchars($cat, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
     $categoryHtml .= '<button class="category-filter" type="button" data-category="'.$safeCat.'"><span>'.$safeCat.'</span><small>'.$count.'</small></button>';
@@ -194,7 +196,7 @@ $outhtml .='
 ';}
 file_put_contents('feed.json', json_encode($feeda));
 $template = file_get_contents('base.html');
-$html = str_replace(array('<!-- posts here -->','<!-- options here -->','<!-- categories here -->'),array($outhtml,$outoptions,$categoryHtml),$template);
+$html = str_replace(array('<!-- posts here -->','<!-- options here -->','<!-- categories here -->','<!-- category total here -->'),array($outhtml,$outoptions,$categoryHtml,$categoryTotal),$template);
 file_put_contents('public/index.html', $html);
 
 
