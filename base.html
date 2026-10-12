@@ -172,9 +172,18 @@ document.addEventListener('DOMContentLoaded', function ()
 
     tl.addEventListener('input', function (e)
     {
+        if (!caudio || !Number.isFinite(caudio.duration)) return;
         const seekPercentage = fsb.value;
-        const seekTime = (seekPercentage / 100) * caudio.duration;
-        caudio.currentTime = seekTime;
+        caudio.currentTime = (seekPercentage / 100) * caudio.duration;
+    });
+    document.querySelectorAll('.podcast-seek').forEach(function (seekbar) {
+        seekbar.addEventListener('input', function () {
+            const player = seekbar.closest('.podcast-player');
+            const audio = player ? player.querySelector('audio') : null;
+            if (audio && Number.isFinite(audio.duration) && audio.duration > 0) {
+                audio.currentTime = (Number(seekbar.value) / 100) * audio.duration;
+            }
+        });
     });
 
     const speeds = [1, 1.2, 1.5, 1.75, 2];
@@ -200,8 +209,17 @@ document.addEventListener('DOMContentLoaded', function ()
 
         document.getElementById('current_time').textContent = formattedCurrentTime;
         document.getElementById('duration').textContent = formattedDuration;
-        const progress = (currentTime / caudio.duration) * 100;
+        const progress = Number.isFinite(caudio.duration) && caudio.duration > 0 ? (currentTime / caudio.duration) * 100 : 0;
         fsb.value = progress;
+        const inlinePlayer = caudio.closest('.podcast-player');
+        if (inlinePlayer) {
+            const inlineCurrent = inlinePlayer.querySelector('.podcast-current');
+            const inlineDuration = inlinePlayer.querySelector('.podcast-duration');
+            const inlineSeek = inlinePlayer.querySelector('.podcast-seek');
+            if (inlineCurrent) inlineCurrent.textContent = formattedCurrentTime;
+            if (inlineDuration) inlineDuration.textContent = formattedDuration;
+            if (inlineSeek) inlineSeek.value = progress;
+        }
     }
 
     function playTime()
@@ -315,6 +333,15 @@ document.addEventListener('DOMContentLoaded', function ()
         const audioDur = caudio.duration;
         const formattedDur = formatTime(audioDur);
         document.getElementById('duration').textContent = formattedDur;
+        const inlinePlayer = caudio.closest('.podcast-player');
+        if (inlinePlayer) {
+            const inlineCurrent = inlinePlayer.querySelector('.podcast-current');
+            const inlineDuration = inlinePlayer.querySelector('.podcast-duration');
+            const inlineSeek = inlinePlayer.querySelector('.podcast-seek');
+            if (inlineCurrent) inlineCurrent.textContent = formatTime(caudio.currentTime);
+            if (inlineDuration) inlineDuration.textContent = formattedDur;
+            if (inlineSeek) inlineSeek.value = 0;
+        }
         fp.style.display = 'block';
         setTimeout(function ()
         {
