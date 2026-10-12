@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="theme.css" type="text/css">
 </head>
 <body>
-<div id="header">RSS阅读器</div>
+<div id="header"><span class="brand-mark">☷</span><span class="brand-name">Ember</span><div class="global-search"><span>⌕</span><input id="article-search" type="search" placeholder="搜索文章、订阅源和笔记…"></div><div class="header-actions"><button type="button" id="toggle-layout" title="切换紧凑视图">▥</button><button type="button" id="refresh-view" title="刷新页面">↻</button><button type="button" id="theme-toggle" title="切换主题">☾</button><span class="admin-pill">RSS Reader</span></div></div>
 <div class="page-layout">
 <aside id="category_sidebar">
   <div class="sidebar-heading">RSS 分类</div>
@@ -25,9 +25,9 @@
   <span class="tab">Posts</span>
   <span class="tab">Podcasts</span>
   <select name="changechannel"><!-- options here --></select></span></div>
-  <div id="wrap">
+  <div class="reader-columns"><section id="wrap" aria-label="文章列表">
   <!-- posts here -->
-  </div>
+  </section><article id="article-detail" aria-live="polite"><div class="detail-empty"><span class="detail-spark">✦</span><h2>选择一篇文章</h2><p>在中间列表中选择文章，查看摘要和详细内容。</p></div></article></div>
 </main>
 </div>
  
@@ -91,6 +91,59 @@ categoryButtons.forEach(button => {
         applyFilters();
     });
 });
+
+const detailPane = document.getElementById('article-detail');
+const searchInput = document.getElementById('article-search');
+const allPosts = Array.from(document.querySelectorAll('.post'));
+function showDetail(post) {
+  allPosts.forEach(item => item.classList.toggle('selected-article', item === post));
+  const copy = post.cloneNode(true);
+  copy.classList.add('detail-copy');
+  copy.classList.remove('selected-article');
+  copy.style.display = 'flex';
+  copy.querySelectorAll('a').forEach(a => { a.target = '_blank'; a.rel = 'noopener noreferrer'; });
+  copy.querySelectorAll('.audio button[data-aid]').forEach(btn => {
+    btn.addEventListener('click', event => {
+      event.preventDefault(); event.stopPropagation();
+      const original = post.querySelector('.audio button[data-aid]');
+      if (original) original.click();
+    });
+  });
+  detailPane.replaceChildren(copy);
+  detailPane.scrollTop = 0;
+}
+allPosts.forEach(post => {
+  post.setAttribute('tabindex','0');
+  post.setAttribute('role','button');
+  post.addEventListener('click', event => {
+    if (event.target.closest('a,button,audio,select')) return;
+    showDetail(post);
+  });
+  post.addEventListener('keydown', event => {
+    if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); showDetail(post); }
+  });
+});
+if (allPosts.length) showDetail(allPosts[0]);
+if (searchInput) searchInput.addEventListener('input', () => {
+  const q = searchInput.value.trim().toLocaleLowerCase();
+  allPosts.forEach(post => {
+    const hay = post.textContent.toLocaleLowerCase();
+    post.dataset.searchMatch = (!q || hay.includes(q)) ? '1' : '0';
+  });
+  applyFilters();
+});
+const originalApplyFilters = applyFilters;
+applyFilters = function() {
+  originalApplyFilters();
+  const q = searchInput ? searchInput.value.trim().toLocaleLowerCase() : '';
+  allPosts.forEach(post => {
+    if (q && !post.textContent.toLocaleLowerCase().includes(q)) post.style.display = 'none';
+  });
+};
+document.getElementById('refresh-view')?.addEventListener('click', () => location.reload());
+document.getElementById('toggle-layout')?.addEventListener('click', () => document.body.classList.toggle('compact-view'));
+document.getElementById('theme-toggle')?.addEventListener('click', () => document.body.classList.toggle('warm-dark'));
+
 document.addEventListener('DOMContentLoaded', function ()
 {
     const btns = document.querySelectorAll('.audio button[data-aid]');
