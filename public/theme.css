@@ -496,3 +496,39 @@ body.warm-dark #article-detail .detail-copy .summary { background:#302b23; color
   #wrap { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
   #article-detail { display: none; }
 }
+
+
+/* Inline podcast playback: remove the fixed bottom player and keep controls beside the selected card. */
+#floating_player { display: none !important; }
+#wrap .post[data-audio="1"] .podcast-player {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  width: 100%;
+  box-sizing: border-box;
+}
+#wrap .post[data-audio="1"] .podcast-player .vinyl-disc {
+  width: 48px;
+  height: 48px;
+  flex: 0 0 48px;
+}
+#wrap .post[data-audio="1"] .podcast-player .vinyl-disc:before { inset: 19px; }
+#wrap .post[data-audio="1"] .podcast-controls {
+  margin-left: auto;
+  min-width: 0;
+  align-items: flex-end;
+}
+#wrap .post[data-audio="1"] .podcast-controls button {
+  min-width: 0;
+  padding: 8px 12px;
+}
+@media (max-width: 560px) {
+  #wrap .post[data-audio="1"] .podcast-player { gap: 8px; }
+  #wrap .post[data-audio="1"] .podcast-player .vinyl-disc {
+    width: 42px;
+    height: 42px;
+    flex-basis: 42px;
+  }
+  #wrap .post[data-audio="1"] .podcast-player .vinyl-disc:before { inset: 16px; }
+}
