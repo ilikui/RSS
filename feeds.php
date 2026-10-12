@@ -183,6 +183,7 @@ $cover = !empty($post['image']) ? $post['image'] : '';
 $outhtml .= '<div class="audio podcast-player">
 <div class="vinyl-disc"><img src="'.htmlspecialchars($cover, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8').'" alt="" loading="lazy"></div>
 <div class="podcast-controls"><span class="podcast-label">PODCAST</span><button type="button" data-aid="'.$index.'" aria-label="播放或暂停播客">▶ 播放</button></div>
+<div class="podcast-progress" aria-label="播客播放进度"><span class="podcast-current">00:00</span><input class="podcast-seek" type="range" min="0" max="100" step="0.1" value="0" aria-label="拖动调整播放进度"><span class="podcast-duration">00:00</span></div>
 <audio src="'.htmlspecialchars($post['audio'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8').'" preload="metadata" aid="'.$index.'"></audio></div>';
 $index++;
 }
