@@ -3,7 +3,6 @@ https://blog.t9t.io/atom.xml
 http://feeds.feedburner.com/ruanyifeng
 http://www.zhangxinxu.com/wordpress/?feed=rss2
 https://www.huangdf.xyz/rss.xml
-https://blog.fkynjyq.com/feed.xml
 https://www.buzzing.cc/feed.xml
 https://depth.buzzing.cc/feed.xml
 https://hn.buzzing.cc/feed.xml
@@ -42,12 +41,10 @@ https://reutersnew.buzzing.cc/feed.xml
 https://newyorker.buzzing.cc/feed.xml
 https://dev.buzzing.cc/feed.xml
 https://crypto.buzzing.cc/feed.xml
-https://www.huangdf.xyz/rss.xml
 https://wayjam.me/index.xml
 https://wp-boke.work/rss.xml
 https://liuuzaki.net/feed
 http://www.laobiao.fun/rss.xml
-https://trudbot.cn/atom.xml
 https://trudbot.cn/atom.xml
 https://blog.bluemangoo.net/rss.xml
 https://www.xiaohuge.icu/rss/feed.xml
@@ -141,7 +138,6 @@ https://data.getpodcast.xyz/data/ximalaya/artist-6042491.xml
 https://data.getpodcast.xyz/data/ximalaya/11829465.xml
 http://www.ximalaya.com/album/14965438.xml
 https://data.getpodcast.xyz/data/ximalaya/3316049.xml
-https://data.getpodcast.xyz/data/ximalaya/4410130.xml
 http://www.ximalaya.com/album/4661218.xml
 https://data.getpodcast.xyz/data/ximalaya/12049697.xml
 http://www.ximalaya.com/album/3418284.xml
@@ -188,7 +184,6 @@ https://byte.coffee/feed/podcast/
 https://other.caixin.com/itunes/101523091.xml
 https://casticle.fireside.fm/rss
 https://podcasts.cosmosrepair.com/rss
-https://crazy.capital/feed
 http://www.spreaker.com/show/2571819/episodes/feed
 https://feeds.jjldbk.com/all.xml
 https://www.digforfire.net/digforfire_radio_feed.xml
@@ -215,7 +210,6 @@ https://jiaocha.io/feed.xml
 https://jingshu.love/episodes/feed.xml
 https://jiumutalk.com/episodes/feed.xml
 https://podcast.kaopubear.top/episodes/feed.xml
-https://pan.icu/feed
 https://kukfm.com/rss
 https://anchor.fm/s/34f9859c/podcast/rss
 https://loudmurmursfm.com/episodes/feed.xml
@@ -233,7 +227,6 @@ http://steveshuo.com/rss
 https://storyfm.cn/feed/episodes
 https://podcast.cscript.site/podcast.xml
 https://talkgo.fm/index.xml
-https://techfusionfm.com/podcast.xml
 http://techreview.social/rss
 https://thespiral.fm/episodes/feed.xml
 https://theue.me/feed/podcast
@@ -256,4 +249,3 @@ https://yitianshijie.net/episodes/feed.xml
 https://zheergen.club/episodes/feed.xml
 https://zhiyi.life/episodes/feed.xml
 https://zhuchangsile.xyz/episodes/feed.xml
-https://talkcdn.swift.gg/static/rss.xml
