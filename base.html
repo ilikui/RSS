@@ -13,13 +13,22 @@
 </head>
 <body>
 <div id="header">RSS阅读器</div>
-<div id="filter"><span id="filters">
-<span class="tab active">All</span>
-<span class="tab">Posts</span>
-<span class="tab">Podcasts</span>
-<select name="changechannel"><!-- options here --></select></span></div>
-<div id="wrap">
-<!-- posts here -->
+<div class="page-layout">
+<aside id="category_sidebar">
+  <div class="sidebar-heading">RSS 分类</div>
+  <button class="category-filter active" type="button" data-category="All"><span>全部订阅</span><small><!-- category total here --></small></button>
+  <!-- categories here -->
+</aside>
+<main id="main_content">
+  <div id="filter"><span id="filters">
+  <span class="tab active">All</span>
+  <span class="tab">Posts</span>
+  <span class="tab">Podcasts</span>
+  <select name="changechannel"><!-- options here --></select></span></div>
+  <div id="wrap">
+  <!-- posts here -->
+  </div>
+</main>
 </div>
  
 <div id="floating_player">
@@ -36,63 +45,52 @@
 
 <script>
 const tabs = document.querySelectorAll('.tab');
-const posts = document.querySelectorAll('.post');
+const posts = Array.from(document.querySelectorAll('.post'));
 const select = document.querySelector('select[name="changechannel"]');
+const categoryButtons = document.querySelectorAll('.category-filter');
 let selectedChannel = 'All';
+let selectedCategory = 'All';
+let selectedType = 'All';
 
-select.addEventListener('change', () =>
-{
-    selectedChannel = select.value;
-    posts.forEach(post =>
-    {
+function applyFilters() {
+    posts.forEach(post => {
         const channel = post.getAttribute('data-channel');
-        if (selectedChannel === 'All' || channel === selectedChannel)
-        {
-            post.style.display = 'block';
-        }
-        else
-        {
-            post.style.display = 'none';
-        }
+        const category = post.getAttribute('data-category') || '未分类';
+        const audio = parseInt(post.getAttribute('data-audio'), 10);
+        const typeMatch = selectedType === 'All' ||
+            (selectedType === 'Posts' && audio === 0) ||
+            (selectedType === 'Podcasts' && audio === 1);
+        const channelMatch = selectedChannel === 'All' || channel === selectedChannel;
+        const categoryMatch = selectedCategory === 'All' || category === selectedCategory;
+        post.style.display = typeMatch && channelMatch && categoryMatch ? '' : 'none';
     });
-    tabs.forEach(tab =>
-    {
-        tab.classList.remove('active');
-        select.classList.add('selected');
-    });
+}
 
+select.addEventListener('change', () => {
+    selectedChannel = select.value;
+    tabs.forEach(tab => tab.classList.toggle('active', tab.textContent.trim() === selectedType));
+    select.classList.toggle('selected', selectedChannel !== 'All');
+    applyFilters();
 });
 
-tabs.forEach(tab =>
-{
-    tab.addEventListener('click', () =>
-    {
-        tabs.forEach(tab =>
-        {
-            tab.classList.remove('active');
-        });
-        tab.classList.add('active');
-        const filter = tab.textContent.trim();
-        posts.forEach(post =>
-        {
-            const audio = parseInt(post.getAttribute('data-audio'));
-            const channel = post.getAttribute('data-channel');
-            if (filter === 'All' || (filter === 'Posts' && audio === 0) || (filter === 'Podcasts' && audio === 1))
-            {
-                post.style.display = 'block';
-            }
-            else
-            {
-                post.style.display = 'none';
-            }
-        });
-
+tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+        selectedType = tab.textContent.trim();
+        selectedChannel = 'All';
         select.value = 'All';
         select.classList.remove('selected');
+        tabs.forEach(item => item.classList.toggle('active', item === tab));
+        applyFilters();
     });
 });
 
-
+categoryButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        selectedCategory = button.dataset.category || 'All';
+        categoryButtons.forEach(item => item.classList.toggle('active', item === button));
+        applyFilters();
+    });
+});
 document.addEventListener('DOMContentLoaded', function ()
 {
     const btns = document.querySelectorAll('.audio button[data-aid]');
@@ -157,7 +155,7 @@ document.addEventListener('DOMContentLoaded', function ()
     {
         if (navigator.mediaSession) navigator.mediaSession.playbackState = 'playing';
         fpBtn.classList.add('playing');
-        if (ppBtn) ppBtn.classList.add('playing');
+        if (ppBtn) { ppBtn.classList.add('playing'); ppBtn.textContent = 'Ⅱ 暂停'; }
         if (caudio) caudio.closest('.post')?.classList.add('is-playing');
         updatePositionState();
     }
@@ -166,7 +164,7 @@ document.addEventListener('DOMContentLoaded', function ()
     {
         if (navigator.mediaSession) navigator.mediaSession.playbackState = 'paused';
         fpBtn.classList.remove('playing');
-        if (ppBtn) ppBtn.classList.remove('playing');
+        if (ppBtn) { ppBtn.classList.remove('playing'); ppBtn.textContent = '▶ 播放'; }
         if (caudio) caudio.closest('.post')?.classList.remove('is-playing');
         updatePositionState();
     }
@@ -240,7 +238,7 @@ document.addEventListener('DOMContentLoaded', function ()
 
     function updatePositionState()
     {
-        navigator.mediaSession.setPositionState(
+        if (navigator.mediaSession && navigator.mediaSession.setPositionState) navigator.mediaSession.setPositionState(
         {
             duration: caudio.duration,
             playbackRate: caudio.playbackRate,
@@ -312,7 +310,7 @@ document.addEventListener('DOMContentLoaded', function ()
             prevAid = totalAids - 1;
         }
 
-        navigator.mediaSession.setActionHandler("play", () =>
+        navigator.mediaSession && navigator.mediaSession.setActionHandler("play", () =>
         {
             caudio.play();
         });
