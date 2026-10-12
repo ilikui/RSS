@@ -155,17 +155,19 @@ document.addEventListener('DOMContentLoaded', function ()
 
     function playTime()
     {
-        navigator.mediaSession.playbackState = 'playing';
-        fpBtn.classList.toggle('playing');
-        ppBtn.classList.toggle('playing');
+        if (navigator.mediaSession) navigator.mediaSession.playbackState = 'playing';
+        fpBtn.classList.add('playing');
+        if (ppBtn) ppBtn.classList.add('playing');
+        if (caudio) caudio.closest('.post')?.classList.add('is-playing');
         updatePositionState();
     }
 
     function pauseTime()
     {
-        navigator.mediaSession.playbackState = 'paused';
-        fpBtn.classList.toggle('playing');
-        ppBtn.classList.toggle('playing');
+        if (navigator.mediaSession) navigator.mediaSession.playbackState = 'paused';
+        fpBtn.classList.remove('playing');
+        if (ppBtn) ppBtn.classList.remove('playing');
+        if (caudio) caudio.closest('.post')?.classList.remove('is-playing');
         updatePositionState();
     }
 
