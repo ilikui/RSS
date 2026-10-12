@@ -134,3 +134,10 @@ button#plus30 { padding-right:4px; margin-right:5px; }
 #floating_player button#speed { order:2; float:none; margin:0; flex:0 0 auto; }
 #floating_player button#plus30 { order:3; float:none; margin:0; flex:0 0 auto; }
 @media (max-width:560px) { #floating_player .player_meta { gap:6px; } #floating_player button#playpausebutton { margin-left:auto; } #floating_player span#title { max-width:none; } }
+
+
+/* Hide the sticky podcast player while keeping podcast cards and in-card controls available. */
+#floating_player { display:none !important; }
+body { margin-bottom:0; }
+.page-layout { padding-bottom:24px; }
+@media (max-width:700px) { .page-layout { padding-bottom:24px; } }
