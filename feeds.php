@@ -1,4 +1,15 @@
 <?php
+function cleanSummary($value) {
+    $text = (string) $value;
+    $text = preg_replace('#<(script|style)\\b[^>]*>.*?</\\1>#is', ' ', $text);
+    $text = html_entity_decode(strip_tags($text), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+    $text = preg_replace('/\\s+/u', ' ', trim($text));
+    if ($text === '') return '';
+    if (function_exists('mb_strlen') && function_exists('mb_substr')) {
+        return mb_substr($text, 0, 260, 'UTF-8') . (mb_strlen($text, 'UTF-8') > 260 ? '…' : '');
+    }
+    return strlen($text) > 500 ? substr($text, 0, 500) . '…' : $text;
+}
 $urls = file('feeds.txt', FILE_IGNORE_NEW_LINES);
 $postLimit = 5;
 $result = '';
@@ -38,6 +49,11 @@ echo "\n"."Getting feed from: ". $url." \n";
                     break;
                 }
                 $description = $item->description;
+                $summary = (string) $item->description;
+                if ($summary === '') {
+                    $contentNamespace = $item->children('content', true);
+                    $summary = (string) ($contentNamespace->encoded ?? '');
+                }
                 $image = null;
                if (isset($item->image) && isset($item->image->url)) {
                     $image = $item->image->url;
@@ -67,6 +83,7 @@ echo "\n"."Getting feed from: ". $url." \n";
                 $feeda[$feedn]['date'] = strtotime((string) $item->pubDate);
                   
                 $feeda[$feedn]['image'] = (string) $image;
+                $feeda[$feedn]['summary'] = cleanSummary($summary);
                 $feeda[$feedn]['audio'] = (string) $audiourl;
                 $count++; $feedn++;
             }
@@ -76,6 +93,7 @@ echo "\n"."Getting feed from: ". $url." \n";
                     break;
                 }
                 $content = $entry->content;
+                $summary = (string) ($entry->summary ?? $entry->content ?? '');
                 $image = null;
                 if (isset($entry->image) && isset($entry->image->url)) {
                  $image = $entry->image->url;
@@ -96,6 +114,7 @@ echo "\n"."Getting feed from: ". $url." \n";
                 $feeda[$feedn]['ch'] = (string) $feed->title;
                 $feeda[$feedn]['date'] = strtotime((string) ($entry->published ?? $entry->updated));
                 $feeda[$feedn]['image'] = (string) $image;
+                $feeda[$feedn]['summary'] = cleanSummary($summary);
                 $feeda[$feedn]['audio'] = (string) $audiourl;
             
 
@@ -129,7 +148,10 @@ else {
   $outhtml .= '<div class="leftpan"><img src="https://s2.googleusercontent.com/s2/favicons?domain='.urlencode($domain).'" alt="'.$post['title'].'"/><span class="domain">'.$domain.'</span></div>';
 }
 $outhtml .= '<div class="rightpan"><div class="feedname"><span class="channel">'.$post['ch'].'</span> &bull; <span class="date">'.date('M d, Y',$post['date']).'</span></div>
-<h2><a href="'.$post['link'].'" target="_blank">'.$post['title'].'</a></h2>';
+<h2><a href="'.$post['link'].'" target="_blank" rel="noopener noreferrer">'.$post['title'].'</a></h2>';
+if (!empty($post['summary'])) {
+    $outhtml .= '<p class="summary">'.htmlspecialchars($post['summary'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8').'</p>';
+}
 if(!empty($post['audio'])){
 $outhtml .= '<div class="audio">
 <button data-aid="'.$index.'">Play</button>
