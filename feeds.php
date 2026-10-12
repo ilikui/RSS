@@ -10,12 +10,22 @@ function cleanSummary($value) {
     }
     return strlen($text) > 500 ? substr($text, 0, 500) . '…' : $text;
 }
-$urls = file('feeds.txt', FILE_IGNORE_NEW_LINES);
+$urls = [];
+foreach (file('feeds.txt', FILE_IGNORE_NEW_LINES) as $line) {
+    $line = trim($line);
+    if ($line === '' || strpos($line, '#') === 0) continue;
+    $parts = explode('|', $line, 3);
+    $url = trim($parts[0]);
+    if (!filter_var($url, FILTER_VALIDATE_URL)) continue;
+    $urls[] = ['url' => $url, 'category' => trim($parts[1] ?? '未分类') ?: '未分类'];
+}
 $postLimit = 5;
 $result = '';
 $feeda = array();
 $feedn = 0;
-foreach ($urls as $url) {
+foreach ($urls as $feedConfig) {
+    $url = $feedConfig['url'];
+    $sourceCategory = $feedConfig['category'];
 echo "\n"."Getting feed from: ". $url." \n";
     $ch = curl_init();
     curl_setopt_array($ch, [
@@ -32,6 +42,7 @@ echo "\n"."Getting feed from: ". $url." \n";
     $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     if (curl_errno($ch) || $httpcode != 200) {
          echo "\n"."Error loading feed from " . $url . " " . $httpcode . " " . curl_error($ch) ." \n ";
+         curl_close($ch);
          $feedn++;
         continue;
     }
@@ -80,6 +91,7 @@ echo "\n"."Getting feed from: ". $url." \n";
                 $feeda[$feedn]['title'] = (string) $item->title;
                 if(empty($feeda[$feedn]['title'])) {$feeda[$feedn]['title'] = substr(strip_tags($description),0,140);}
                 $feeda[$feedn]['ch'] = (string) $feed->channel->title;
+                $feeda[$feedn]['category'] = $sourceCategory;
                 $feeda[$feedn]['date'] = strtotime((string) $item->pubDate);
                   
                 $feeda[$feedn]['image'] = (string) $image;
@@ -112,6 +124,7 @@ echo "\n"."Getting feed from: ". $url." \n";
                 $feeda[$feedn]['link'] = (string) $entry->link['href'];
                 $feeda[$feedn]['title'] = (string) $entry->title;
                 $feeda[$feedn]['ch'] = (string) $feed->title;
+                $feeda[$feedn]['category'] = $sourceCategory;
                 $feeda[$feedn]['date'] = strtotime((string) ($entry->published ?? $entry->updated));
                 $feeda[$feedn]['image'] = (string) $image;
                 $feeda[$feedn]['summary'] = cleanSummary($summary);
@@ -130,6 +143,18 @@ echo "\n"."Getting feed from: ". $url." \n";
 }
 usort($feeda, fn($a, $b) => $b['date'] <=> $a['date']);
 $outhtml = '';
+$categoryCounts = [];
+foreach ($feeda as $item) {
+    $cat = trim((string)($item['category'] ?? '未分类')) ?: '未分类';
+    $categoryCounts[$cat] = ($categoryCounts[$cat] ?? 0) + 1;
+}
+ksort($categoryCounts, SORT_NATURAL | SORT_FLAG_CASE);
+$categoryHtml = '';
+$categoryTotal = count($feeda);
+foreach ($categoryCounts as $cat => $count) {
+    $safeCat = htmlspecialchars($cat, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+    $categoryHtml .= '<button class="category-filter" type="button" data-category="'.$safeCat.'"><span>'.$safeCat.'</span><small>'.$count.'</small></button>';
+}
 $outoptions = '<option value="All">All Channels</option>';
 $outchannels = array();
 $index = 0;
@@ -139,7 +164,8 @@ $outoptions .= '<option value="'.$post['ch'].'">'.$post['ch'].'</option>';
 $outchannels[] = $post['ch'];
 }
 $isaudio = !empty($post['audio']) ? 1 : 0;
-$outhtml .= '<div class="post" data-channel="'.$post['ch'].'" data-ts="'.$post['date'].'" data-audio="'.$isaudio.'">';
+$category = htmlspecialchars((string)($post['category'] ?? '未分类'), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+$outhtml .= '<div class="post" data-channel="'.htmlspecialchars($post['ch'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8').'" data-category="'.$category.'" data-ts="'.$post['date'].'" data-audio="'.$isaudio.'">';
 if(!empty($post['image'])){
 $outhtml .= '<div class="leftpan"><img src="'.$post['image'].'" alt="'.$post['title'].'"/ ></div>';
 }
@@ -153,9 +179,11 @@ if (!empty($post['summary'])) {
     $outhtml .= '<p class="summary">'.htmlspecialchars($post['summary'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8').'</p>';
 }
 if(!empty($post['audio'])){
-$outhtml .= '<div class="audio">
-<button data-aid="'.$index.'">Play</button>
-<audio src="'.$post['audio'].'" preload="metadata" aid="'.$index.'"  controls></audio></div>';
+$cover = !empty($post['image']) ? $post['image'] : '';
+$outhtml .= '<div class="audio podcast-player">
+<div class="vinyl-disc"><img src="'.htmlspecialchars($cover, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8').'" alt="" loading="lazy"></div>
+<div class="podcast-controls"><span class="podcast-label">PODCAST</span><button type="button" data-aid="'.$index.'" aria-label="播放或暂停播客">▶ 播放</button></div>
+<audio src="'.htmlspecialchars($post['audio'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8').'" preload="metadata" aid="'.$index.'"></audio></div>';
 $index++;
 }
 
@@ -168,7 +196,7 @@ $outhtml .='
 ';}
 file_put_contents('feed.json', json_encode($feeda));
 $template = file_get_contents('base.html');
-$html = str_replace(array('<!-- posts here -->','<!-- options here -->'),array($outhtml,$outoptions),$template);
+$html = str_replace(array('<!-- posts here -->','<!-- options here -->','<!-- categories here -->','<!-- category total here -->'),array($outhtml,$outoptions,$categoryHtml,$categoryTotal),$template);
 file_put_contents('public/index.html', $html);
 
 
