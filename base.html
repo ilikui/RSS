@@ -182,6 +182,7 @@ document.addEventListener('DOMContentLoaded', function ()
             const audio = player ? player.querySelector('audio') : null;
             if (audio && Number.isFinite(audio.duration) && audio.duration > 0) {
                 audio.currentTime = (Number(seekbar.value) / 100) * audio.duration;
+                seekbar.style.setProperty('--progress', seekbar.value + '%');
             }
         });
     });
@@ -218,7 +219,7 @@ document.addEventListener('DOMContentLoaded', function ()
             const inlineSeek = inlinePlayer.querySelector('.podcast-seek');
             if (inlineCurrent) inlineCurrent.textContent = formattedCurrentTime;
             if (inlineDuration) inlineDuration.textContent = formattedDuration;
-            if (inlineSeek) inlineSeek.value = progress;
+            if (inlineSeek) { inlineSeek.value = progress; inlineSeek.style.setProperty('--progress', progress + '%'); }
         }
     }
 
@@ -340,7 +341,7 @@ document.addEventListener('DOMContentLoaded', function ()
             const inlineSeek = inlinePlayer.querySelector('.podcast-seek');
             if (inlineCurrent) inlineCurrent.textContent = formatTime(caudio.currentTime);
             if (inlineDuration) inlineDuration.textContent = formattedDur;
-            if (inlineSeek) inlineSeek.value = 0;
+            if (inlineSeek) { inlineSeek.value = 0; inlineSeek.style.setProperty('--progress', '0%'); }
         }
         fp.style.display = 'block';
         setTimeout(function ()
