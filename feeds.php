@@ -14,7 +14,7 @@ $urls = [];
 foreach (file('feeds.txt', FILE_IGNORE_NEW_LINES) as $line) {
     $line = trim($line);
     if ($line === '' || strpos($line, '#') === 0) continue;
-    $parts = explode('|', $line, 2);
+    $parts = explode('|', $line, 3);
     $url = trim($parts[0]);
     if (!filter_var($url, FILTER_VALIDATE_URL)) continue;
     $urls[] = ['url' => $url, 'category' => trim($parts[1] ?? '未分类') ?: '未分类'];
