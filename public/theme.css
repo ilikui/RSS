@@ -39,8 +39,11 @@ span.tab.active { color:var(--black); padding:8px 13px; background:var(--white);
 select { border:1px solid transparent; padding:8px 28px 8px 10px; font-size:14px; vertical-align:middle; max-width:min(230px,70vw); background:var(--white); color:var(--black); margin-left:3px; border-radius:8px; outline:none; }
 select.selected { background:var(--white); border-color:var(--grey); }
 
-/* Podcast cards: a visible audio action and a small animated equalizer. */
-.post[data-audio="1"] .leftpan:after { content:"♫  PODCAST"; position:absolute; top:12px; left:12px; z-index:1; padding:6px 9px; border-radius:8px; color:#fff; background:rgba(22,25,31,.76); font-size:10px; font-weight:750; letter-spacing:1px; backdrop-filter:blur(8px); }
+/* Podcast cards: vinyl record artwork and playback animation. */
+.post[data-audio="1"] .leftpan { height:220px; display:flex; align-items:center; justify-content:center; isolation:isolate; background:radial-gradient(ellipse at center,#202b3a 0%,#0e1420 72%,#080b10 100%); }
+.post[data-audio="1"] .leftpan img { position:relative; inset:auto; width:174px; height:174px; max-width:72%; max-height:calc(100% - 28px); object-fit:cover; border-radius:50%; border:7px solid #11151c; box-sizing:border-box; box-shadow:0 8px 24px rgba(0,0,0,.38),0 0 0 1px rgba(255,255,255,.18); z-index:0; }
+.post[data-audio="1"] .leftpan:before { content:""; position:absolute; z-index:1; width:174px; height:174px; max-width:72%; max-height:calc(100% - 28px); border-radius:50%; box-sizing:border-box; pointer-events:none; background:repeating-radial-gradient(circle at center,rgba(255,255,255,.14) 0 1px,rgba(0,0,0,.18) 2px 4px,transparent 5px 8px),radial-gradient(circle at center,transparent 0 13%,rgba(0,0,0,.9) 13.5% 14.5%,transparent 15%),conic-gradient(from 10deg,rgba(255,255,255,.12),transparent 14%,rgba(255,255,255,.05) 24%,transparent 42%,rgba(255,255,255,.12) 60%,transparent 75%,rgba(255,255,255,.07)); border:1px solid rgba(255,255,255,.2); }
+.post[data-audio="1"] .leftpan:after { content:"♫  PODCAST"; position:absolute; top:12px; left:12px; z-index:2; padding:6px 9px; border-radius:8px; color:#fff; background:rgba(22,25,31,.76); font-size:10px; font-weight:750; letter-spacing:1px; backdrop-filter:blur(8px); }
 .post[data-audio="1"] .audio { display:flex; align-items:center; gap:12px; margin-top:16px; padding:10px 12px; border:1px solid var(--grey); border-radius:12px; background:var(--lightgrey); min-width:0; }
 .post[data-audio="1"] .audio:after { content:""; flex:1; min-width:28px; height:24px; opacity:.72; background:repeating-linear-gradient(90deg,var(--orange) 0 3px,transparent 3px 7px); clip-path:polygon(0 42%,4% 42%,4% 63%,8% 63%,8% 22%,12% 22%,12% 78%,16% 78%,16% 35%,20% 35%,20% 90%,24% 90%,24% 12%,28% 12%,28% 70%,32% 70%,32% 40%,36% 40%,36% 58%,40% 58%,40% 20%,44% 20%,44% 83%,48% 83%,48% 32%,52% 32%,52% 65%,56% 65%,56% 15%,60% 15%,60% 78%,64% 78%,64% 38%,68% 38%,68% 55%,72% 55%,72% 25%,76% 25%,76% 85%,80% 85%,80% 40%,84% 40%,84% 62%,88% 62%,88% 18%,92% 18%,92% 72%,96% 72%,96% 42%,100% 42%,100% 58%,0 58%); }
 .post[data-audio="1"] .audio button[data-aid] { flex:0 0 38px; width:38px; height:38px; margin:0; border:0; border-radius:50%; background-color:var(--orange); background-position:center; background-size:13px; box-shadow:0 3px 8px rgba(252,126,17,.24); transition:transform .18s ease,box-shadow .18s ease; }
@@ -48,9 +51,10 @@ select.selected { background:var(--white); border-color:var(--grey); }
 .post[data-audio="1"] .audio button[data-aid]:focus-visible { outline:3px solid var(--orange); outline-offset:3px; }
 .post[data-audio="1"] .audio audio { display:none; }
 .post[data-audio="1"].nowplaying .audio { border-color:var(--orange); background:color-mix(in srgb,var(--orange) 9%,var(--lightgrey)); }
-.post[data-audio="1"].nowplaying .audio:after { animation:audioPulse .85s ease-in-out infinite alternate; }
-.post[data-audio="1"].nowplaying .leftpan:after { background:var(--orange); color:#191919; }
-@keyframes audioPulse { from { opacity:.35; transform:scaleY(.72); } to { opacity:1; transform:scaleY(1.08); } }
+.post[data-audio="1"].is-playing .leftpan img { animation:vinylSpin 5s linear infinite; }
+.post[data-audio="1"].is-playing .leftpan:before { animation:vinylSpin 5s linear infinite; }
+.post[data-audio="1"].is-playing .leftpan { background:radial-gradient(ellipse at center,#29384a 0%,#111a29 70%,#080b10 100%); }
+@keyframes vinylSpin { to { transform:rotate(360deg); } }
 
 #floating_player { width:100%; text-align:center; position:fixed; left:0; right:0; bottom:0; background:var(--whiteop); box-shadow:0 -4px 24px rgba(0,0,0,.09); backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px); display:none; opacity:0; transition:opacity .3s ease; z-index:10; border-top:1px solid var(--grey); }
 #floating_player.show { opacity:1; }
