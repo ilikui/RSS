@@ -532,3 +532,66 @@ body.warm-dark #article-detail .detail-copy .summary { background:#302b23; color
   }
   #wrap .post[data-audio="1"] .podcast-player .vinyl-disc:before { inset: 16px; }
 }
+
+
+/* Inline podcast progress: visible timeline and elapsed/total time in each card. */
+.post[data-audio="1"] .podcast-player {
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+}
+.post[data-audio="1"] .podcast-progress {
+  order:3;
+  display:flex;
+  align-items:center;
+  gap:9px;
+  flex:0 0 100%;
+  width:100%;
+  min-width:0;
+  box-sizing:border-box;
+  margin-top:3px;
+  color:var(--ember-muted, var(--darkgrey));
+  font-size:11px;
+  font-variant-numeric:tabular-nums;
+}
+.post[data-audio="1"] .podcast-progress span {
+  flex:0 0 auto;
+  min-width:36px;
+  text-align:center;
+}
+.post[data-audio="1"] .podcast-progress .podcast-seek {
+  appearance:none;
+  -webkit-appearance:none;
+  flex:1 1 auto;
+  width:100%;
+  min-width:40px;
+  height:5px;
+  margin:0;
+  padding:0;
+  border:0;
+  border-radius:999px;
+  outline:none;
+  cursor:pointer;
+  background:linear-gradient(to right,var(--ember-accent, var(--orange)) 0%,var(--ember-accent, var(--orange)) var(--progress, 0%),#d7d0c3 var(--progress, 0%),#d7d0c3 100%);
+}
+.post[data-audio="1"] .podcast-progress .podcast-seek::-webkit-slider-thumb {
+  appearance:none;
+  -webkit-appearance:none;
+  width:12px;
+  height:12px;
+  border-radius:50%;
+  background:var(--ember-accent, var(--orange));
+  box-shadow:0 1px 4px #0002;
+}
+.post[data-audio="1"] .podcast-progress .podcast-seek::-moz-range-thumb {
+  width:12px;
+  height:12px;
+  border:0;
+  border-radius:50%;
+  background:var(--ember-accent, var(--orange));
+  box-shadow:0 1px 4px #0002;
+}
+@media (max-width:560px) {
+  .post[data-audio="1"] .podcast-progress { gap:6px; font-size:10px; }
+  .post[data-audio="1"] .podcast-progress span { min-width:32px; }
+}
