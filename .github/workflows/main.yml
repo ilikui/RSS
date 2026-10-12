@@ -7,6 +7,8 @@ on:
     paths:
       - 'feeds.php'
       - 'base.html'
+      - 'feeds.txt'
+      - 'public/theme.css'
 
   schedule:
   - cron: '0 */2 * * *'
