@@ -98,3 +98,39 @@ button#plus30 { padding-right:4px; margin-right:5px; }
   div#timeline_wrap {margin:8px 10px;}
 }
 @media (prefers-reduced-motion:reduce) { *,*::before,*::after {transition:none!important;animation:none!important;scroll-behavior:auto!important;} }
+
+
+/* Category sidebar and split layout */
+.page-layout { display:grid; grid-template-columns:240px minmax(0,1fr); gap:28px; max-width:1900px; margin:0 auto; padding:0 28px 120px; box-sizing:border-box; align-items:start; }
+#category_sidebar { position:sticky; top:18px; padding:18px 12px; border:1px solid var(--grey); border-radius:18px; background:var(--white); max-height:calc(100vh - 36px); overflow:auto; }
+.sidebar-heading { padding:0 10px 14px; font-size:15px; font-weight:750; letter-spacing:.04em; }
+.category-filter { width:100%; display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 11px; border:0; border-radius:10px; background:transparent; color:inherit; text-align:left; cursor:pointer; font:inherit; transition:background .18s ease,color .18s ease; }
+.category-filter:hover { background:rgba(252,126,17,.08); }
+.category-filter.active { background:rgba(252,126,17,.13); color:var(--orange); font-weight:700; }
+.category-filter small { color:var(--darkgrey); font-size:11px; }
+#main_content { min-width:0; }
+#main_content #filter { max-width:none; padding-left:0; padding-right:0; }
+#main_content #wrap { max-width:none; margin-top:18px; padding:0; grid-template-columns:repeat(3,minmax(0,1fr)); }
+.post[data-audio="1"] .podcast-player { display:flex; align-items:center; justify-content:space-between; gap:18px; padding:12px 0 0; margin-top:14px; border-top:1px solid var(--grey); }
+.podcast-player .vinyl-disc { width:76px; height:76px; flex:0 0 76px; border-radius:50%; padding:5px; box-sizing:border-box; background:repeating-radial-gradient(circle,#171717 0 2px,#292929 3px 4px,#101010 5px 6px); box-shadow:0 5px 12px #0003; position:relative; }
+.podcast-player .vinyl-disc:before { content:""; position:absolute; inset:31px; border-radius:50%; background:var(--orange); border:3px solid #f5f5f5; z-index:2; }
+.podcast-player .vinyl-disc img { width:100%; height:100%; object-fit:cover; border-radius:50%; display:block; }
+.post.is-playing .vinyl-disc { animation:vinyl-spin 3.2s linear infinite; }
+.post:not(.is-playing) .vinyl-disc { animation-play-state:paused; }
+.podcast-controls { margin-left:auto; min-width:110px; display:flex; flex-direction:column; align-items:flex-end; gap:7px; }
+.podcast-label { color:var(--darkgrey); font-size:10px; letter-spacing:.14em; font-weight:800; }
+.podcast-controls button { border:0; border-radius:999px; background:var(--orange); color:white; padding:10px 17px; min-width:102px; font-weight:750; cursor:pointer; box-shadow:0 5px 14px #fc7e1128; }
+.podcast-controls button.playing { background:#242424; color:#fff; }
+@keyframes vinyl-spin { to { transform:rotate(360deg); } }
+@media (min-width:1600px) { .page-layout { max-width:2100px; grid-template-columns:260px minmax(0,1fr); gap:32px; padding-left:32px; padding-right:32px; } #main_content #wrap { grid-template-columns:repeat(4,minmax(0,1fr)); } }
+@media (max-width:1100px) { .page-layout { grid-template-columns:190px minmax(0,1fr); gap:18px; padding-left:18px; padding-right:18px; } #main_content #wrap { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media (max-width:700px) { .page-layout { display:block; padding:0 14px 115px; } #category_sidebar { position:static; max-height:none; display:flex; gap:7px; overflow-x:auto; padding:10px; margin-bottom:14px; border-radius:12px; } .sidebar-heading { flex:0 0 auto; align-self:center; padding:0 8px; } #category_sidebar .category-filter { flex:0 0 auto; width:auto; white-space:nowrap; padding:8px 10px; } #main_content #filter { padding:5px 0; } #main_content #wrap { grid-template-columns:minmax(0,1fr); } .podcast-player .vinyl-disc { width:64px; height:64px; flex-basis:64px; } .podcast-player .vinyl-disc:before { inset:26px; } }
+@media (prefers-reduced-motion:reduce) { .post.is-playing .vinyl-disc { animation:none; } }
+
+/* Keep playback actions aligned to the right in both the card and sticky player */
+#floating_player .player_meta { display:flex; align-items:center; gap:10px; }
+#floating_player button#playpausebutton { order:4; float:none; margin:0 0 0 auto; flex:0 0 auto; }
+#floating_player span#title { order:1; float:none; flex:1 1 auto; min-width:0; max-width:none; }
+#floating_player button#speed { order:2; float:none; margin:0; flex:0 0 auto; }
+#floating_player button#plus30 { order:3; float:none; margin:0; flex:0 0 auto; }
+@media (max-width:560px) { #floating_player .player_meta { gap:6px; } #floating_player button#playpausebutton { margin-left:auto; } #floating_player span#title { max-width:none; } }
